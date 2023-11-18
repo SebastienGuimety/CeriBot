@@ -3,89 +3,132 @@ version: "3.1"
 nlu:
 - intent: greet
   examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
+    - salut
+    - bonjour
+    - coucou
+    - salut là
+    - bon matin
+    - bonsoir
     - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+    - salut toi
+    - allons-y
+    - salut mec
+    - bon matin
+    - bonsoir
+    - bon après-midi
 
 - intent: goodbye
   examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
+    - au revoir
+    - adieu
+    - à plus tard
+    - bonne nuit
+    - ciao
+    - à bientôt
+    - à la prochaine
+    - passe une bonne journée
+    - à la revoyure
     - bye bye
-    - see you later
+    - à plus
 
 - intent: affirm
   examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
+    - oui
+    - ouais
+    - effectivement
+    - bien sûr
+    - ça me semble bien
     - correct
 
 - intent: deny
   examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+    - non
+    - pas du tout
+    - jamais
+    - je ne pense pas
+    - je n'aime pas ça
+    - aucune chance
+    - vraiment pas
 
 - intent: mood_great
   examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+    - parfait
+    - génial
+    - incroyable
+    - je me sens comme un roi
+    - merveilleux
+    - je me sens très bien
+    - ça va bien
+    - je suis super
+    - je suis incroyable
+    - je vais sauver le monde
+    - super excité
+    - extrêmement bien
+    - tellement parfait
+    - tellement bien
 
 - intent: mood_unhappy
   examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+    - ma journée était horrible
+    - je suis triste
+    - je ne me sens pas très bien
+    - je suis déçu
+    - super triste
+    - je suis tellement triste
+    - triste
+    - très triste
+    - malheureux
+    - pas bien
+    - pas très bien
+    - extrêmement triste
+    - tellement triste
 
 - intent: bot_challenge
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - es-tu un bot ?
+    - es-tu humain ?
+    - est-ce que je parle à un bot ?
+    - est-ce que je parle à un humain ?
+    - es-tu réellement une intelligence artificielle ?
+    - qui es-tu vraiment ?
+    - es-tu un programme informatique ?
+    - es-tu une création de l'homme ?
+
+- intent: give_section
+  examples: |
+    - ma section est [M1](section)
+    - je suis en [M1](section)
+    - [M1](section)
+    - ma section est [M2](section)
+    - je suis en [M2](section)
+    - [M2](section)
+
+- intent: give_group
+  examples: |
+    - mon groupe est [alternant](group)
+    - je suis en groupe [alternant](group)
+    - groupe [alternant](group)
+    - [alternant](group)
+    - mon groupe est [classique](group)
+    - je suis en groupe [classique](group)
+    - groupe [classique](group)
+    - [classique](group)
+
+- intent: ask_schedule
+  examples : |
+    - peux-tu me donner mon emploi du temps ?
+    - donne-moi l'emploi du temps de ma section.
+    - qu'est-ce qui vient ensuite ?
+    - qu'ai-je maintenant ?
+    - quel est l'horaire ?
+    - horaire
+
+- intent: repeat_section
+  examples: |
+    - quelle est ma section ?
+    - dis-moi ma section
+    - connais-tu ma section ?
+    - répète ma section
+    - répète section
+    - répète répète répète section
+    - section

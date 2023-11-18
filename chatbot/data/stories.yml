@@ -28,3 +28,24 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: interactive story 1
+  steps:
+  - intent: ask_schedule
+  - action: schedule_form
+  - active_loop: schedule_form
+  - slot_was_set:
+    - requested_slot: section
+  - slot_was_set:
+    - section: M1
+  - slot_was_set:
+    - requested_slot: group
+  - slot_was_set:
+    - group: alternant
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_submit_schedule
+  - action: action_say_schedule
+  - intent: repeat_section
+  - action: action_say_schedule

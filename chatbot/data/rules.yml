@@ -11,3 +11,20 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Activate form
+  steps:
+  - intent: ask_schedule
+  - action: schedule_form
+  - active_loop: schedule_form
+
+- rule: Submit form
+  condition:
+  - active_loop: schedule_form
+  steps:
+  - action: schedule_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_submit_schedule
+  - action: action_say_schedule
