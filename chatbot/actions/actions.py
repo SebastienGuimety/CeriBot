@@ -7,11 +7,13 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
+import requests
 
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from CeriBot.PartagePegado.demo import *
 
 
 class ActionHelloWorld(Action):
@@ -47,3 +49,39 @@ class ActionSaySchedule(Action):
        
         return []
     
+class ActionSendEmail(Action):
+    def name(self):
+        return "action_send_email"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Obtenir les informations nécessaires de la conversation
+        partage = PartageZimbraCom()
+
+        email_address = tracker.get_slot("email")
+        full_name = tracker.get_slot("full_name")
+        subject = tracker.get_slot("subject")
+        message = tracker.get_slot("message")
+
+        partage.auth()
+        #partage.request(partage.inbox_request)
+        req = partage.build_msg_request(to={'mail': email_address, 'full_name': full_name}, subject=subject, body=message, html_body=message)
+        partage.request(req)
+
+
+        # Appeler l'API pour envoyer l'email
+        api_url = "URL de votre API"
+        api_payload = {
+            "email_address": email_address,
+            "subject": subject,
+            "message": message
+        }
+
+        response = requests.post(api_url, json=api_payload)
+
+        # Traiter la réponse de l'API
+        if response.status_code == 200:
+            dispatcher.utter_message("L'email a été envoyé avec succès.")
+        else:
+            dispatcher.utter_message("Échec de l'envoi de l'email.")
+
+        return []

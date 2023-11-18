@@ -12,13 +12,15 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Activate form
+# Formulaire de demande de section
+
+- rule: Activate form schedule
   steps:
   - intent: ask_schedule
   - action: schedule_form
   - active_loop: schedule_form
 
-- rule: Submit form
+- rule: Submit form schedule
   condition:
   - active_loop: schedule_form
   steps:
@@ -28,3 +30,21 @@ rules:
     - requested_slot: null
   - action: utter_submit_schedule
   - action: action_say_schedule
+
+# Formulaire d'envoi de mail
+
+- rule: Activate form sendmail
+  steps:
+  - intent: ask_sendmail
+  - action: sendmail_form
+  - active_loop: sendmail_form
+
+- rule: Submit form sendmail
+  condition:
+  - active_loop: sendmail_form
+  steps:
+  - action: sendmail_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_send_email

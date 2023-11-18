@@ -114,6 +114,33 @@ nlu:
     - groupe [classique](group)
     - [classique](group)
 
+- intent: give_fullname
+  examples: |
+    - mon nom est [John Doe](fullname)
+    - je m'appelle [John Doe](fullname)
+    - [John Doe](fullname)
+    - mon nom est [Jane Doe](fullname)
+    - je m'appelle [Jane Doe](fullname)
+    - [Jane Doe](fullname)
+
+- intent: give_email
+  examples: |
+    - mon email est [seb.guimety@gmail.com](email)
+    - [seb.guimety@gmail.com](email)
+    - je suis [seb.guimety@gmail.com](email)
+
+- intent: give_subject
+  examples: |
+    - le sujet de mon message est [Rasa](subject)
+    - [Rasa](subject)
+    - je veux parler de [Rasa](subject)
+
+- intent: give_message
+  examples: |
+    - mon message est [Rasa est un framework de développement de chatbot](message)
+    - [Rasa est un framework de développement de chatbot](message)
+    - je veux dire que [Rasa est un framework de développement de chatbot](message)
+    
 - intent: ask_schedule
   examples : |
     - peux-tu me donner mon emploi du temps ?
@@ -122,6 +149,13 @@ nlu:
     - qu'ai-je maintenant ?
     - quel est l'horaire ?
     - horaire
+
+- intent: ask_mail
+  examples : |
+    - Je veux envoyer un mail.
+    - Je veux envoyer un mail à un professeur.
+    - Je veux envoyer un mail à un étudiant.
+    - mail
 
 - intent: repeat_section
   examples: |

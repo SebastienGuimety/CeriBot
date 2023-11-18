@@ -29,7 +29,7 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story: interactive story 1
+- story: Story when user asks for section
   steps:
   - intent: ask_schedule
   - action: schedule_form
@@ -49,3 +49,29 @@ stories:
   - action: action_say_schedule
   - intent: repeat_section
   - action: action_say_schedule
+
+- story: Story when user asks for send a mail
+  steps:
+  - intent: ask_sendmail
+  - action: sendmail_form
+  - active_loop: sendmail_form
+  - slot_was_set:
+    - requested_slot: fullname
+  - slot_was_set:
+    - fullname: John Doe
+  - slot_was_set:
+    - requested_slot: email
+  - slot_was_set:
+    - email: seb.guimety@gmail.com
+  - slot_was_set:
+    - requested_slot: subject
+  - slot_was_set:
+    - subject: Rasa
+  - slot_was_set:
+    - requested_slot: message
+  - slot_was_set:
+    - message: Rasa est un framework de développement de chatbot
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_send_email  
