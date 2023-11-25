@@ -62,7 +62,7 @@ stories:
   - slot_was_set:
     - requested_slot: email
   - slot_was_set:
-    - email: seb.guimety@gmail.com
+    - email: seb.gui@gmail.com
   - slot_was_set:
     - requested_slot: subject
   - slot_was_set:
@@ -75,3 +75,4 @@ stories:
     - requested_slot: null
   - active_loop: null
   - action: action_send_email  
+

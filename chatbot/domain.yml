@@ -21,10 +21,6 @@ intents:
 entities:
   - section
   - group
-  - fullname
-  - email
-  - subject
-  - message
 
 slots:
   section:
@@ -49,34 +45,34 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-    - type: from_entity
-      entity: fullname
+    - type: from_text
       conditions:
       - active_loop: sendmail_form
+        requested_slot: fullname
   email:
     type: text
     influence_conversation: true
     mappings:
-    - type: from_entity
-      entity: email
+    - type: from_text
       conditions:
       - active_loop: sendmail_form
+        requested_slot: email
   subject:
     type: text
     influence_conversation: true
     mappings:
-    - type: from_entity
-      entity: subject
+    - type: from_text
       conditions:
       - active_loop: sendmail_form
+        requested_slot: subject
   message:
     type: text
     influence_conversation: true
     mappings:
-    - type: from_entity
-      entity: message
+    - type: from_text
       conditions:
       - active_loop: sendmail_form
+        requested_slot: message
 
 forms:
   schedule_form:

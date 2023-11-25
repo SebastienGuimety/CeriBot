@@ -116,30 +116,27 @@ nlu:
 
 - intent: give_fullname
   examples: |
-    - mon nom est [John Doe](fullname)
-    - je m'appelle [John Doe](fullname)
-    - [John Doe](fullname)
-    - mon nom est [Jane Doe](fullname)
-    - je m'appelle [Jane Doe](fullname)
-    - [Jane Doe](fullname)
+    - mon nom est John Doe
+    - je m'appelle Jane Doe
+    - Alice Johnson
 
 - intent: give_email
   examples: |
-    - mon email est [seb.guimety@gmail.com](email)
-    - [seb.guimety@gmail.com](email)
-    - je suis [seb.guimety@gmail.com](email)
+    - mon email est john.doe@example.com
+    - jane.doe@email.com
+    - je suis alice.j@example.com
 
 - intent: give_subject
   examples: |
-    - le sujet de mon message est [Rasa](subject)
-    - [Rasa](subject)
-    - je veux parler de [Rasa](subject)
+    - le sujet de mon message est Rasa
+    - Chatbot
+    - je veux parler de AI
 
 - intent: give_message
   examples: |
-    - mon message est [Rasa est un framework de développement de chatbot](message)
-    - [Rasa est un framework de développement de chatbot](message)
-    - je veux dire que [Rasa est un framework de développement de chatbot](message)
+    - mon message est Rasa est un framework de développement de chatbot
+    - Python
+    - je veux dire que chatbots are amazing
     
 - intent: ask_schedule
   examples : |

@@ -9,7 +9,8 @@
 
 import requests
 import os
-from typing import Any, Text, Dict, List
+from typing import List, Dict, Text, Any, Optional
+
 from actions.api.demo_actions import PartageZimbraCom
 
 from rasa_sdk import Action, Tracker
@@ -42,7 +43,8 @@ class ActionSaySchedule(Action):
 class ActionSendEmail(Action):
     def name(self):
         return "action_send_email"
-
+    
+    
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # Obtenir les informations nécessaires de la conversation
         partage = PartageZimbraCom()
@@ -64,7 +66,6 @@ class ActionSendEmail(Action):
 
         if not response.is_fault():
             dispatcher.utter_message("L'email a été envoyé avec succès.")
-            print(response.get_response())
         else:   
             dispatcher.utter_message("Échec de l'envoi de l'email.")
 

@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-group",
+      "2": "I-group",
+      "3": "L-group",
+      "4": "U-group",
+      "5": "B-section",
+      "6": "I-section",
+      "7": "L-section",
+      "8": "U-section",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-group": 1,
+      "I-group": 2,
+      "L-group": 3,
+      "U-group": 4,
+      "B-section": 5,
+      "I-section": 6,
+      "L-section": 7,
+      "U-section": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]
