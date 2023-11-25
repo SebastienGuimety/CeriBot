@@ -12,6 +12,12 @@ intents:
   - ask_schedule
   - give_section
   - give_group
+  - give_fullname
+  - give_email
+  - give_subject
+  - give_message
+  - ask_sendmail
+
 entities:
   - section
   - group
@@ -37,6 +43,8 @@ slots:
       entity: group
       conditions:
       - active_loop: schedule_form
+
+
   fullname:
     type: text
     influence_conversation: true

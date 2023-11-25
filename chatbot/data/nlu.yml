@@ -150,7 +150,7 @@ nlu:
     - quel est l'horaire ?
     - horaire
 
-- intent: ask_mail
+- intent: ask_sendmail
   examples : |
     - Je veux envoyer un mail.
     - Je veux envoyer un mail à un professeur.
