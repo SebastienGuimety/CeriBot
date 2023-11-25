@@ -47,7 +47,9 @@ class CredsPrompt:
 
     @staticmethod
     def prompt_password():
-        p = 'Sebgavoite84340_'
+
+        # place in p your password of university
+        p = ''
         enc = b64encode(p.encode('utf-8'))
         CredsPrompt.nuke(p)
         return enc.decode()
@@ -81,6 +83,15 @@ class PartageZimbraCom:
 
             # I believe in full-crypto
             config['zimbra'] = {}
+
+            ##############
+            #
+            #
+            # Replace with your own credentials
+            # mail and password
+            #
+            #
+            ##############
             config.set('zimbra', 'mail', "sebastien.guimety@alumni.univ-avignon.fr", encrypted=True)
             config.set('zimbra', 'fullName', "Sebastien Guimety", encrypted=True)
             config.set('zimbra', 'password', b64decode(CredsPrompt.prompt_password()).decode("utf-8"), encrypted=True)
