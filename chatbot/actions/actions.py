@@ -11,13 +11,14 @@ import requests
 import os
 from typing import List, Dict, Text, Any, Optional
 
-from actions.api.demo_actions import PartageZimbraCom
+from actions.apiPartage.demo_actions import PartageZimbraCom
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 import sys
-print("OONN  EESTTTT OOUUUUUUUUUUUUUU")
 
+
+# ACTION POUR DEMANDER LA CLASSE ET LE GROUPE DE L'ETUDIANT
 
 class ActionSaySchedule(Action):
 
@@ -40,6 +41,9 @@ class ActionSaySchedule(Action):
        
         return []
     
+
+# ACTION POUR LE FORMULAIRE D'ENVOI D'EMAIL
+
 class ActionSendEmail(Action):
     def name(self):
         return "action_send_email"
@@ -58,7 +62,6 @@ class ActionSendEmail(Action):
         print("subject: ", subject)
         print("message: ", message)
     
-
         partage.auth()
         #partage.request(partage.inbox_request)
         req = partage.build_msg_request(to={'mail': email_address, 'full_name': full_name}, subject=subject, body=message, html_body=message)
