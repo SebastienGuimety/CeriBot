@@ -28,3 +28,69 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: Story when user asks for section
+  steps:
+  - intent: ask_schedule
+  - action: schedule_form
+  - active_loop: schedule_form
+  - slot_was_set:
+    - requested_slot: section
+  - slot_was_set:
+    - section: M1
+  - slot_was_set:
+    - requested_slot: group
+  - slot_was_set:
+    - group: alternant
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_submit_schedule
+  - action: action_say_schedule
+  - intent: repeat_section
+  - action: action_say_schedule
+
+- story: Story when user asks for send a mail
+  steps:
+  - intent: ask_sendmail
+  - action: sendmail_form
+  - active_loop: sendmail_form
+  - slot_was_set:
+    - requested_slot: fullname
+  - slot_was_set:
+    - fullname: John Doe
+  - slot_was_set:
+    - requested_slot: email
+  - slot_was_set:
+    - email: seb.gui@gmail.com
+  - slot_was_set:
+    - requested_slot: subject
+  - slot_was_set:
+    - subject: Rasa
+  - slot_was_set:
+    - requested_slot: message
+  - slot_was_set:
+    - message: Rasa est un framework de développement de chatbot
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_send_email  
+
+- story: Story when user asks for weather
+  steps:
+  - intent: ask_weather
+  - action: weather_form
+  - active_loop: weather_form
+  - slot_was_set:
+    - requested_slot: city
+  - slot_was_set:
+    - city: Paris
+  - slot_was_set:
+    - requested_slot: affichage
+  - slot_was_set:
+    - affichage: temperature
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_weather
+  - action: action_send_weather

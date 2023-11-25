@@ -8,27 +8,219 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - repeat_section
+  - ask_schedule
+  - give_section
+  - give_group
+  - give_fullname
+  - give_email
+  - give_subject
+  - give_message
+  - ask_sendmail
+  - ask_weather
+  - give_city
+  - give_affichage
+
+entities:
+  - section
+  - group
+  - city
+  - affichage
+
+slots:
+  section:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: section
+      conditions:
+      - active_loop: schedule_form
+  group:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: group
+      conditions:
+      - active_loop: schedule_form
+
+
+  fullname:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: sendmail_form
+        requested_slot: fullname
+  email:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: sendmail_form
+        requested_slot: email
+  subject:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: sendmail_form
+        requested_slot: subject
+  message:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: sendmail_form
+        requested_slot: message
+
+  city:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: city
+      conditions:
+      - active_loop: weather_form
+  affichage:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: affichage
+      conditions:
+      - active_loop: weather_form
+
+forms:
+  schedule_form:
+    required_slots:
+      - section
+      - group
+  
+  sendmail_form:
+    required_slots:
+      - fullname
+      - email
+      - subject
+      - message
+
+  weather_form:
+    required_slots:
+      - city
+      - affichage
+
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: "Salut ! Comment ça va ?"
+  - text: "Bonjour ! Comment vas-tu ?"
+  - text: "Hey ! Comment ça va ?"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    - text: "Voici quelque chose pour te remonter le moral :"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Est-ce que cela t'a aidé ?"
+    - text: "J'espère que cela t'a aidé !"
+    - text: "Est-ce que tu te sens mieux ?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Super, continue comme ça !"
+    - text: "parfait"
+    - text: "Super !"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Au revoir"
+    - text: "A bientôt"
+    - text: "A la prochaine"
+    - text: "Ciao"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "Je suis un bot, alimenté par Rasa."
+    - text: "Je suis un bot, créé par des étudiants du CERI."
+    - text: "Je suis un bot, créé par des étudiants."
 
+  utter_ask_section:
+    - text: "Quelle est ta section ?"
+    - text: "J'ai besoin de ta section pour cela."
+    - text: "Dis-moi ta section, s'il te plaît."
+
+  utter_ask_group:
+    - text: "Quel est ton groupe ?"
+    - text: "Donne-moi ton groupe, s'il te plaît."
+  
+  utter_submit_schedule:
+    - text: "Merci pour ces informations !"
+    - text: "Merci pour ces informations ! Je vais te dire ton emploi du temps."
+    - text: "Merci ! Je vais te dire ton emploi du temps."
+  
+  utter_ask_fullname:
+    - text: "Quel est ton nom complet ?"
+    - text: "J'ai besoin de ton nom complet pour cela."
+    - text: "Dis-moi ton nom complet, s'il te plaît."
+  
+  utter_ask_email:
+    - text: "Quel est ton email ?"
+  
+  utter_ask_subject:
+    - text: "Quel est le sujet de ton message ?"
+  
+  utter_ask_message:
+    - text: "Quel est ton message ?"
+  
+  utter_ask_city:
+    - text: "La temperature d'Avinon ou une autre ville ?"
+      buttons:
+      - title: "Avignon"
+        payload: '/inform{{"city":"Avignon"}}'
+      - title: "Une autre ville"
+        payload: '/utter_ask_another_city'
+
+  utter_ask_another_city:
+    - text: "Quelle ville ?"
+    - text: "Donne-moi une autre ville, s'il te plaît."
+
+  utter_ask_affichage:
+    - text: "Que veux tu savoir ?"
+      buttons:
+      - title: "La temperature"
+        payload: '/inform{{"affichage":"temperature"}}'
+      - title: "Le vent"
+        payload: '/inform{{"affichage":"vent"}}'
+      - title: "Les deux"
+        payload: '/inform{{"affichage":"tout"}}'
+      
+
+
+actions:
+  - utter_submit_schedule
+  - utter_ask_section
+  - utter_ask_group
+  - utter_greet
+  - utter_cheer_up
+  - utter_did_that_help
+  - utter_happy
+  - utter_goodbye
+  - utter_iamabot
+  - utter_ask_fullname
+  - utter_ask_email
+  - utter_ask_subject
+  - utter_ask_message
+  - action_say_schedule
+  - action_send_email
+  - action_send_weather
+  - action_submit_weather
+  - utter_ask_city
+  - utter_ask_another_city
+  - utter_ask_affichage
+  
+  
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
