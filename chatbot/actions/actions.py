@@ -48,30 +48,29 @@ class ActionSendEmail(Action):
         partage = PartageZimbraCom()
 
         email_address = tracker.get_slot("email")
-        full_name = tracker.get_slot("full_name")
+        full_name = tracker.get_slot("fullname")
         subject = tracker.get_slot("subject")
         message = tracker.get_slot("message")
+        print("email_address: ", email_address)
+        print("full_name: ", full_name)
+        print("subject: ", subject)
+        print("message: ", message)
+    
 
         partage.auth()
         #partage.request(partage.inbox_request)
         req = partage.build_msg_request(to={'mail': email_address, 'full_name': full_name}, subject=subject, body=message, html_body=message)
-        partage.request(req)
+        response = partage.request(req)
 
-
-        # Appeler l'API pour envoyer l'email
-        api_url = "URL de votre API"
-        api_payload = {
-            "email_address": email_address,
-            "subject": subject,
-            "message": message
-        }
-
-        response = requests.post(api_url, json=api_payload)
-
-        # Traiter la réponse de l'API
-        if response.status_code == 200:
+        if not response.is_fault():
             dispatcher.utter_message("L'email a été envoyé avec succès.")
-        else:
+            print(response.get_response())
+        else:   
             dispatcher.utter_message("Échec de l'envoi de l'email.")
+
+            print(f"error\n"
+                  f"fault_message: {response.get_fault_message()}\n"
+                  f"fault_code: {response.get_fault_code()}")
+
 
         return []

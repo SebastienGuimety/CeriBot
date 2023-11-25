@@ -1,5 +1,5 @@
 from configparser import ConfigParser, ParsingError
-from crypto_actions import Crypto
+from .crypto_actions import Crypto
 import re
 
 

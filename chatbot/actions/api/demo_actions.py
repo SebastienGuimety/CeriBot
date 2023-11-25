@@ -11,8 +11,8 @@ from pythonzimbra.tools import auth
 from pythonzimbra.tools.auth import authenticate
 
 
-from crypto_actions import Crypto
-from safeconfigparser_actions import SafeConfigParser
+from .crypto_actions import Crypto
+from .safeconfigparser_actions import SafeConfigParser
 
 
 class CredsPrompt:
@@ -47,7 +47,7 @@ class CredsPrompt:
 
     @staticmethod
     def prompt_password():
-        p = input('Entrez le mdp: ')
+        p = 'Sebgavoite84340_'
         enc = b64encode(p.encode('utf-8'))
         CredsPrompt.nuke(p)
         return enc.decode()
@@ -76,13 +76,13 @@ class PartageZimbraCom:
     def get_config(self):
         config = SafeConfigParser()
 
-        if not exists('config.ini'):
-            mail, full_name = CredsPrompt.prompt_mail()
+        if not exists('.config.ini'):
+            #mail, full_name = CredsPrompt.prompt_mail()
 
             # I believe in full-crypto
             config['zimbra'] = {}
-            config.set('zimbra', 'mail', mail, encrypted=True)
-            config.set('zimbra', 'fullName', full_name, encrypted=True)
+            config.set('zimbra', 'mail', "sebastien.guimety@alumni.univ-avignon.fr", encrypted=True)
+            config.set('zimbra', 'fullName', "Sebastien Guimety", encrypted=True)
             config.set('zimbra', 'password', b64decode(CredsPrompt.prompt_password()).decode("utf-8"), encrypted=True)
 
             config.write(open('config.ini', 'w+'))
