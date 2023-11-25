@@ -18,6 +18,21 @@ from rasa_sdk.executor import CollectingDispatcher
 import sys
 
 
+class ActionSubmitWeather(Action):
+    def name(self) -> Text:
+        return "action_submit_weather"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        # Implement logic to provide a summary or final message
+        dispatcher.utter_message("Je traite votre demande... Veuillez patienter s'il vous plaît.")
+
+        return []
+
 # ACTION POUR DEMANDER LA CLASSE ET LE GROUPE DE L'ETUDIANT
 
 class ActionSaySchedule(Action):
@@ -75,6 +90,66 @@ class ActionSendEmail(Action):
             print(f"error\n"
                   f"fault_message: {response.get_fault_message()}\n"
                   f"fault_code: {response.get_fault_code()}")
+
+
+        return []
+    
+
+class ActionSendWeather(Action):
+    def name(self):
+        return "action_send_weather"
+    
+    
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Obtenir les informations nécessaires de la conversation
+
+        city = tracker.get_slot("city")
+        print("city: ", city)
+        affichage = tracker.get_slot("affichage")
+        print("affichage: ", affichage)
+
+        api_key = "95747142ae542efed63858e9c0c8bb9e"
+        base_url = "http://api.weatherstack.com/current"
+        params = {
+            "access_key": api_key,
+            "query": city,
+        }
+
+        if not city:
+            dispatcher.utter_message(text="Je ne connais pas votre ville.")
+        elif not affichage:
+            dispatcher.utter_message(text="Je ne connais pas votre demande.")
+        else:
+            
+            try:
+                # Fetch current weather
+                response = requests.get(base_url, params=params)
+                data = response.json()
+
+                if response.status_code == 200:
+                    # localtime = data["location"]["localtime"]
+                    temperature = data["current"]["temperature"]
+                    weather_description = data["current"]["weather_descriptions"][0]
+                    wind_speed = data["current"]["wind_speed"]
+                    # wind_degree = data["current"]["wind_degree"]
+                    # humidity = data["current"]["humidity"]
+                    
+                    if affichage == "temperature":
+                        dispatcher.utter_message(f"La température actuelle à {city} est de {temperature}°C")
+                    elif affichage == "vent":
+                        dispatcher.utter_message(f"La vitesse du vent actuelle à {city} est de {wind_speed} km/h")
+                    else:
+                        dispatcher.utter_message(f"La température actuelle à {city} est de {temperature}°C")
+                        dispatcher.utter_message(f"La météo actuelle à {city} est {weather_description}")
+                        dispatcher.utter_message(f"La vitesse du vent actuelle à {city} est de {wind_speed} km/h")
+                else:
+                    dispatcher.utter_message(f"Error: {data['error']['info']}")
+            except Exception as e:
+                dispatcher.utter_message(f"Error: {e}")
+
+        
+    
+
 
 
         return []

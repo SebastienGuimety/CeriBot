@@ -17,10 +17,15 @@ intents:
   - give_subject
   - give_message
   - ask_sendmail
+  - ask_weather
+  - give_city
+  - give_affichage
 
 entities:
   - section
   - group
+  - city
+  - affichage
 
 slots:
   section:
@@ -74,6 +79,23 @@ slots:
       - active_loop: sendmail_form
         requested_slot: message
 
+  city:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: city
+      conditions:
+      - active_loop: weather_form
+  affichage:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: affichage
+      conditions:
+      - active_loop: weather_form
+
 forms:
   schedule_form:
     required_slots:
@@ -87,13 +109,17 @@ forms:
       - subject
       - message
 
+  weather_form:
+    required_slots:
+      - city
+      - affichage
+
 
 responses:
   utter_greet:
   - text: "Salut ! Comment ça va ?"
   - text: "Bonjour ! Comment vas-tu ?"
   - text: "Hey ! Comment ça va ?"
-
 
   utter_cheer_up:
     - text: "Voici quelque chose pour te remonter le moral :"
@@ -147,6 +173,29 @@ responses:
   
   utter_ask_message:
     - text: "Quel est ton message ?"
+  
+  utter_ask_city:
+    - text: "La temperature d'Avinon ou une autre ville ?"
+      buttons:
+      - title: "Avignon"
+        payload: '/inform{{"city":"Avignon"}}'
+      - title: "Une autre ville"
+        payload: '/utter_ask_another_city'
+
+  utter_ask_another_city:
+    - text: "Quelle ville ?"
+    - text: "Donne-moi une autre ville, s'il te plaît."
+
+  utter_ask_affichage:
+    - text: "Que veux tu savoir ?"
+      buttons:
+      - title: "La temperature"
+        payload: '/inform{{"affichage":"temperature"}}'
+      - title: "Le vent"
+        payload: '/inform{{"affichage":"vent"}}'
+      - title: "Les deux"
+        payload: '/inform{{"affichage":"tout"}}'
+      
 
 
 actions:
@@ -165,10 +214,13 @@ actions:
   - utter_ask_message
   - action_say_schedule
   - action_send_email
+  - action_send_weather
+  - action_submit_weather
+  - utter_ask_city
+  - utter_ask_another_city
+  - utter_ask_affichage
   
   
-
-
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

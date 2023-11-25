@@ -76,3 +76,21 @@ stories:
   - active_loop: null
   - action: action_send_email  
 
+- story: Story when user asks for weather
+  steps:
+  - intent: ask_weather
+  - action: weather_form
+  - active_loop: weather_form
+  - slot_was_set:
+    - requested_slot: city
+  - slot_was_set:
+    - city: Paris
+  - slot_was_set:
+    - requested_slot: affichage
+  - slot_was_set:
+    - affichage: temperature
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_weather
+  - action: action_send_weather
