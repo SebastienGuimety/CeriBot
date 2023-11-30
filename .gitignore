@@ -1,0 +1,10 @@
+ceribot
+chatbot/models
+chatbot/events.db
+chatbot/events.db-shm
+chatbot/events.db-wal
+chatbot/.rasa
+chatbot/rasa.db
+chatbot/results
+.idea
+chatbot/story_graph.dot

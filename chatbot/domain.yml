@@ -101,7 +101,7 @@ forms:
     required_slots:
       - section
       - group
-  
+
   sendmail_form:
     required_slots:
       - fullname
@@ -154,26 +154,26 @@ responses:
   utter_ask_group:
     - text: "Quel est ton groupe ?"
     - text: "Donne-moi ton groupe, s'il te plaît."
-  
+
   utter_submit_schedule:
     - text: "Merci pour ces informations !"
     - text: "Merci pour ces informations ! Je vais te dire ton emploi du temps."
     - text: "Merci ! Je vais te dire ton emploi du temps."
-  
+
   utter_ask_fullname:
     - text: "Quel est ton nom complet ?"
     - text: "J'ai besoin de ton nom complet pour cela."
     - text: "Dis-moi ton nom complet, s'il te plaît."
-  
+
   utter_ask_email:
     - text: "Quel est ton email ?"
-  
+
   utter_ask_subject:
     - text: "Quel est le sujet de ton message ?"
-  
+
   utter_ask_message:
     - text: "Quel est ton message ?"
-  
+
   utter_ask_city:
     - text: "La temperature d'Avinon ou une autre ville ?"
       buttons:
@@ -195,7 +195,7 @@ responses:
         payload: '/inform{{"affichage":"vent"}}'
       - title: "Les deux"
         payload: '/inform{{"affichage":"tout"}}'
-      
+
 
 
 actions:
@@ -219,8 +219,8 @@ actions:
   - utter_ask_city
   - utter_ask_another_city
   - utter_ask_affichage
-  
-  
+
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
