@@ -13,7 +13,8 @@ intents:
   - give_section
   - give_group
   - give_fullname
-  - give_email
+  - give_email_sender
+  - give_email_receiver
   - give_subject
   - give_message
   - ask_sendmail
@@ -54,14 +55,22 @@ slots:
       conditions:
       - active_loop: sendmail_form
         requested_slot: fullname
-  email:
+  email_sender:
     type: text
     influence_conversation: true
     mappings:
     - type: from_text
       conditions:
       - active_loop: sendmail_form
-        requested_slot: email
+        requested_slot: email_sender
+  email_receiver:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: sendmail_form
+        requested_slot: email_receiver
   subject:
     type: text
     influence_conversation: true
@@ -105,7 +114,8 @@ forms:
   sendmail_form:
     required_slots:
       - fullname
-      - email
+      - email_sender
+      - email_receiver
       - subject
       - message
 
@@ -165,8 +175,12 @@ responses:
     - text: "J'ai besoin de ton nom complet pour cela."
     - text: "Dis-moi ton nom complet, s'il te plaît."
   
-  utter_ask_email:
+  utter_ask_email_sender:
     - text: "Quel est ton email ?"
+  
+  utter_ask_email_receiver:
+    - text: "Quel est l'email du destinataire ?"
+    - text: "J'ai besoin de l'email du destinataire pour cela."
   
   utter_ask_subject:
     - text: "Quel est le sujet de ton message ?"
@@ -196,8 +210,6 @@ responses:
       - title: "Les deux"
         payload: '/inform{{"affichage":"tout"}}'
       
-
-
 actions:
   - utter_submit_schedule
   - utter_ask_section
@@ -209,7 +221,8 @@ actions:
   - utter_goodbye
   - utter_iamabot
   - utter_ask_fullname
-  - utter_ask_email
+  - utter_ask_email_sender
+  - utter_ask_email_receiver
   - utter_ask_subject
   - utter_ask_message
   - action_say_schedule
@@ -219,7 +232,6 @@ actions:
   - utter_ask_city
   - utter_ask_another_city
   - utter_ask_affichage
-  
   
 session_config:
   session_expiration_time: 60

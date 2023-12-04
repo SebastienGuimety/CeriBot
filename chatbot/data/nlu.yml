@@ -120,11 +120,19 @@ nlu:
     - je m'appelle Jane Doe
     - Alice Johnson
 
-- intent: give_email
+- intent: give_email_sender
   examples: |
     - mon email est john.doe@example.com
     - jane.doe@email.com
     - je suis alice.j@example.com
+
+- intent: give_email_receiver
+  examples: |
+    - je veux envoyer un mail à un professeur
+    - je veux envoyer un mail à un étudiant
+    - je veux envoyer un mail à un prof
+    - envoyer un mail à un prof
+    - sebastien.guimety@gmail.com
 
 - intent: give_subject
   examples: |

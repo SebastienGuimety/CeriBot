@@ -63,23 +63,26 @@ class ActionSendEmail(Action):
     def name(self):
         return "action_send_email"
     
-    
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # Obtenir les informations nécessaires de la conversation
-        partage = PartageZimbraCom()
 
-        email_address = tracker.get_slot("email")
+        email_address_sender = tracker.get_slot("email_sender")
+        email_address_receiver = tracker.get_slot("email_receiver")
         full_name = tracker.get_slot("fullname")
         subject = tracker.get_slot("subject")
         message = tracker.get_slot("message")
-        print("email_address: ", email_address)
+        print("email_address_receiver: ", email_address_receiver)
+        print("email_address_sender: ", email_address_sender)
         print("full_name: ", full_name)
         print("subject: ", subject)
         print("message: ", message)
+
+        partage = PartageZimbraCom(email=email_address_sender)
+
     
         partage.auth()
         #partage.request(partage.inbox_request)
-        req = partage.build_msg_request(to={'mail': email_address, 'full_name': full_name}, subject=subject, body=message, html_body=message)
+        req = partage.build_msg_request(to={'mail': email_address_receiver, 'full_name': full_name}, subject=subject, body=message, html_body=message)
         response = partage.request(req)
 
         if not response.is_fault():

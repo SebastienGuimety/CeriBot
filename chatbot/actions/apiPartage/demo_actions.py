@@ -49,7 +49,7 @@ class CredsPrompt:
     def prompt_password():
 
         # place in p your password of university
-        p = ''
+        p = "Sebgavoite84340_"
         enc = b64encode(p.encode('utf-8'))
         CredsPrompt.nuke(p)
         return enc.decode()
@@ -62,10 +62,11 @@ class CredsPrompt:
         del var
 
 
-class PartageZimbraCom:
-    def __init__(self, url: str = 'https://partage.univ-avignon.fr/service/soap'):
+class PartageZimbraCom():
+    def __init__(self, url: str = 'https://partage.univ-avignon.fr/service/soap', email: str = None):
         self.url = url
         self.refresh_timestamp()
+        self.email = email
 
         self.comm = None
         self.token = None
@@ -92,7 +93,7 @@ class PartageZimbraCom:
             #
             #
             ##############
-            config.set('zimbra', 'mail', "sebastien.guimety@alumni.univ-avignon.fr", encrypted=True)
+            config.set('zimbra', 'mail', self.email, encrypted=True)
             config.set('zimbra', 'fullName', "Sebastien Guimety", encrypted=True)
             config.set('zimbra', 'password', b64decode(CredsPrompt.prompt_password()).decode("utf-8"), encrypted=True)
 

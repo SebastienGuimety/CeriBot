@@ -60,9 +60,13 @@ stories:
   - slot_was_set:
     - fullname: John Doe
   - slot_was_set:
-    - requested_slot: email
+    - requested_slot: email_sender
   - slot_was_set:
-    - email: seb.gui@gmail.com
+    - email_sender: seb.guimety@gmail.com
+  - slot_was_set:
+    - requested_slot: email_receiver
+  - slot_was_set:
+    - email_receiver: sebastien.guimety@alumni.univ-avignon.fr
   - slot_was_set:
     - requested_slot: subject
   - slot_was_set:
