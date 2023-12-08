@@ -8,3 +8,4 @@ chatbot/rasa.db
 chatbot/results
 .idea
 chatbot/story_graph.dot
+speech-recognition/.idea
