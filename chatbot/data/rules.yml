@@ -68,3 +68,33 @@ rules:
     - requested_slot: null
   - action: action_submit_weather
   - action: action_send_weather
+
+# Emploi du temps
+- rule: Ask for salle
+  steps:
+  - intent: ask_salle
+  - action: action_search_salle
+
+- rule: Ask for horaire
+  steps:
+  - intent: ask_horaire
+  - action: action_search_horaire
+
+- rule: Ask for professeur
+  steps:
+  - intent: ask_professeur
+  - action: action_search_professeur
+
+- rule: Check salle availability
+  steps:
+  - intent: ask_disponibilite_salle
+  - action: action_recherche_disponibilite_salle
+
+- rule: Query for Salles
+  steps:
+  - intent: ask_salles
+  - action: action_get_salles
+  - action: utter_salles_response
+
+
+  

@@ -1,0 +1,8 @@
+{
+  "rule_only_slots": [],
+  "rule_only_loops": [
+    "sendmail_form",
+    "weather_form",
+    "schedule_form"
+  ]
+}

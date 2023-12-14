@@ -203,3 +203,42 @@ nlu:
     - répète section
     - répète répète répète section
     - section
+
+- intent: ask_salle
+  examples: |
+    - Quelle est la salle pour le cours d'Anglais  aujourd'hui ?
+    - Où se déroule le cours d'anglais ?
+    - Dans quelle salle est le cours d'Anglais ?
+
+- intent: ask_horaire
+  examples: |
+    - Quels sont les horaires du cours d'Anglais demain ?
+    - À quelle heure commence le cours d'Anglais ?
+    - Donne-moi l'horaire du cours d'Anglais.
+
+- intent: ask_professeur
+  examples: |
+    - Qui enseigne le cours d'Anglais  ?
+    - Quel est le professeur pour le cours d'Anglais ?
+    - Nom du professeur pour le cours d'Anglais ?
+
+- intent: ask_cours
+  examples: |
+    - Quels cours ai-je aujourd'hui ?
+    - Peux-tu me dire mon emploi du temps pour demain ?
+    - Quels sont les cours prévus pour la semaine ?
+
+- intent: ask_disponibilite_salle
+  examples: |
+    - Est-ce que la salle est disponible ?
+    - Je peux savoir si la salle est libre ?
+    - Peux-tu vérifier si la salle est occupée ?
+    - Disponibilité de la salle pour demain à 10h ?
+    - La salle 101 est-elle libre cet après-midi ?
+    - Puis-je réserver la salle 101 pour demain ?
+
+- intent: ask_salle
+  examples: |
+    - Quels sont les salles ?
+    - Donne-moi la liste des salles disponibles.
+    - Pouvez-vous me dire les salles ?

@@ -94,3 +94,10 @@ stories:
   - active_loop: null
   - action: action_submit_weather
   - action: action_send_weather
+
+
+- story: Demande des salles
+  steps:
+    - intent: ask_salle
+    - action: action_search_salle
+

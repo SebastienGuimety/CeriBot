@@ -6,9 +6,6 @@ import sys
 import ctypes
 import getpass
 
-from pythonzimbra.communication import Communication
-from pythonzimbra.tools import auth
-from pythonzimbra.tools.auth import authenticate
 
 
 from .crypto_actions import Crypto

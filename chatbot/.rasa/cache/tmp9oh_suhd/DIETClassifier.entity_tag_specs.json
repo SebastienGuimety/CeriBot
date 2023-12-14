@@ -1,0 +1,44 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-affichage",
+      "2": "I-affichage",
+      "3": "L-affichage",
+      "4": "U-affichage",
+      "5": "B-city",
+      "6": "I-city",
+      "7": "L-city",
+      "8": "U-city",
+      "9": "B-group",
+      "10": "I-group",
+      "11": "L-group",
+      "12": "U-group",
+      "13": "B-section",
+      "14": "I-section",
+      "15": "L-section",
+      "16": "U-section",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-affichage": 1,
+      "I-affichage": 2,
+      "L-affichage": 3,
+      "U-affichage": 4,
+      "B-city": 5,
+      "I-city": 6,
+      "L-city": 7,
+      "U-city": 8,
+      "B-group": 9,
+      "I-group": 10,
+      "L-group": 11,
+      "U-group": 12,
+      "B-section": 13,
+      "I-section": 14,
+      "L-section": 15,
+      "U-section": 16,
+      "O": 0
+    },
+    "num_tags": 17
+  }
+]
