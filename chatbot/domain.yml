@@ -156,7 +156,6 @@ responses:
     - text: "Donne-moi ton groupe, s'il te plaît."
   
   utter_submit_schedule:
-    - text: "Merci pour ces informations !"
     - text: "Merci pour ces informations ! Je vais te dire ton emploi du temps."
     - text: "Merci ! Je vais te dire ton emploi du temps."
   

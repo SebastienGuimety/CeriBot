@@ -114,61 +114,7 @@ nlu:
     - groupe [classique](group)
     - [classique](group)
 
-- intent: give_fullname
-  examples: |
-    - mon nom est John Doe
-    - je m'appelle Jane Doe
-    - Alice Johnson
-
-- intent: give_email
-  examples: |
-    - mon email est john.doe@example.com
-    - jane.doe@email.com
-    - je suis alice.j@example.com
-
-- intent: give_subject
-  examples: |
-    - le sujet de mon message est Rasa
-    - Chatbot
-    - je veux parler de AI
-
-- intent: give_message
-  examples: |
-    - mon message est Rasa est un framework de développement de chatbot
-    - Python
-    - je veux dire que chatbots are amazing
     
-- intent: give_city
-  examples: |
-    - la temperature de [Paris](city)
-    - la temperature de [Avignon](city)
-    - la temperature de [Marseille](city)
-    - [Paris](city)
-    - [Avignon](city)
-    - [Marseille](city)
-    - [Lyon](city)
-    - [Toulouse](city)
-    - [Nice](city)
-    - [Nantes](city)
-    - [Montpellier](city)
-    - [Strasbourg](city)
-    - la meteo de [Paris](city)
-    - la meteo de [Avignon](city)
-    - la meteo de [Marseille](city)
-    - la meteo de [Lyon](city)
-    - la meteo de [Toulouse](city)
-
-- intent: give_affichage
-  examples: |
-    - la [temperature](affichage)
-    - le [vent](affichage)
-    - [tout](affichage)
-    - [temperature](affichage)
-    - [vent](affichage)
-    - [tout](affichage)
-    - je veux savoir la [temperature](affichage)
-    - je veux savoir le [vent](affichage)
-    - je veux [tout](affichage) savoir
 
 - intent: ask_schedule
   examples : |
@@ -179,20 +125,6 @@ nlu:
     - quel est l'horaire ?
     - horaire
 
-- intent: ask_weather
-  examples : |
-    - peux-tu me donner la météo ?
-    - donne-moi la météo de ma ville.
-    - quel temps fait-il ?
-    - quel est la température ?
-    - météo
-
-- intent: ask_sendmail
-  examples : |
-    - Je veux envoyer un mail.
-    - Je veux envoyer un mail à un professeur.
-    - Je veux envoyer un mail à un étudiant.
-    - mail
 
 - intent: repeat_section
   examples: |
