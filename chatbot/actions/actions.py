@@ -142,17 +142,9 @@ class ActionSendWeather(Action):
                     elif affichage == "vent":
                         dispatcher.utter_message(f"La vitesse du vent actuelle à {city} est de {wind_speed} km/h")
                     else:
-                        dispatcher.utter_message(f"La température actuelle à {city} est de {temperature}°C")
-                        dispatcher.utter_message(f"La météo actuelle à {city} est {weather_description}")
-                        dispatcher.utter_message(f"La vitesse du vent actuelle à {city} est de {wind_speed} km/h")
+                        dispatcher.utter_message(f"La température actuelle à {city} est de {temperature}°C, la météo est {weather_description} et la vitesse du vent est de {wind_speed} km/h")
                 else:
                     dispatcher.utter_message(f"Error: {data['error']['info']}")
             except Exception as e:
                 dispatcher.utter_message(f"Error: {e}")
-
-        
-    
-
-
-
         return []
