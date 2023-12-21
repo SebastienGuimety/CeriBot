@@ -1,7 +1,7 @@
 version: "3.1"
 
 intents:
-  - ask_salles
+  - cours_request_schedule
   - greet
   - goodbye
   - affirm
@@ -21,23 +21,39 @@ intents:
   - ask_weather
   - give_city
   - give_affichage
-  - ask_horaire
-  - ask_professeur
-  - ask_cours
-  - ask_disponibilite_salle
 
 entities:
+  - jour
+  - groupe
   - section
   - group
   - city
   - affichage
-  - cours
-  - jour
-  - groupe
-  - salle
-  - matiere
 
 slots:
+  jour:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: jour
+        conditions:
+          - active_loop: course_schedule_form
+  groupe:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: groupe
+        conditions:
+          - active_loop: course_schedule_form
+  schedule:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+
   section:
     type: text
     influence_conversation: true
@@ -105,70 +121,37 @@ slots:
       entity: affichage
       conditions:
       - active_loop: weather_form
-  cours:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-  jour:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-  groupe:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-  salle:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-
-  date:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-
-  heure_debut:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-
-  heure_fin:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_text
-
-
 
 forms:
   schedule_form:
     required_slots:
       - section
       - group
-  
+       
+
+  course_schedule_form:
+    required_slots:
+        - jour
+        - groupe
+
   sendmail_form:
     required_slots:
-      - fullname
-      - email
-      - subject
-      - message
+        - fullname
+        - email
+        - subject
+        - message
 
   weather_form:
     required_slots:
-      - city
-      - affichage
-
+        - city
+        - affichage
 
 
 responses:
-  utter_salles_response:
-    - text: "Here are the available salles: {salles}"  # You can customize the response text.
+  utter_ask_jour:
+    - text: "Pour quel jour souhaitez-vous connaître l'emploi du temps ?"
+  utter_ask_groupe:
+    - text: "Quel est votre groupe ?"
   utter_greet:
     - text: "Salut ! Comment ça va ?"
     - text: "Bonjour ! Comment vas-tu ?"
@@ -248,29 +231,12 @@ responses:
         payload: '/inform{{"affichage":"vent"}}'
       - title: "Les deux"
         payload: '/inform{{"affichage":"tout"}}'
-
-# Traitement Emploi du temps
-  utter_ask_cours:
-    - text: "De quel cours souhaitez-vous connaître les détails ?"
-  utter_ask_jour:
-    - text: "Pour quel jour voulez-vous connaître l'emploi du temps ?"
-  utter_ask_salle:
-    - text: "De quelle salle voulez-vous connaître les disponibilités ?"
-  utter_info_cours:
-    - text: "Le cours de {cours} se déroulera en {salle} avec {professeur} de {horaire}."
-  utter_ask_heure_debut:
-    - text: "Quelle est l'heure de début ? (HH:MM)"
-  utter_ask_heure_fin:
-    - text: "Quelle est l'heure de fin ? (HH:MM)"
-  utter_salle_disponible:
-    - text: "La salle est disponible."
-  utter_salle_indisponible:
-    - text: "La salle n'est pas disponible."
-
+      
 
 
 actions:
-  - action_get_salles
+  - action_provide_course_details
+  - action_fetch_course_schedule
   - utter_submit_schedule
   - utter_ask_section
   - utter_ask_group
@@ -291,13 +257,10 @@ actions:
   - utter_ask_city
   - utter_ask_another_city
   - utter_ask_affichage
-  - action_search_salle
-  - action_search_horaire
-  - action_search_professeur
-  - action_search_cours
-  - action_recherche_disponibilite_salle
-
-
+  - utter_ask_groupe
+  - utter_ask_jour
+  
+  
   
 session_config:
   session_expiration_time: 60

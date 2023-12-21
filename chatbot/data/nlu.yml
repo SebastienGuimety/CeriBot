@@ -178,6 +178,8 @@ nlu:
     - qu'ai-je maintenant ?
     - quel est l'horaire ?
     - horaire
+    - Peux-tu me dire mon emploi du temps pour [Lundi](jour) ?
+    - Quel est l'emploi du temps pour [mardi](jour) pour le groupe [1](groupe)?
 
 - intent: ask_weather
   examples : |
@@ -222,7 +224,7 @@ nlu:
     - Quel est le professeur pour le cours d'Anglais ?
     - Nom du professeur pour le cours d'Anglais ?
 
-- intent: ask_cours
+- intent: request_schedule
   examples: |
     - Quels cours ai-je aujourd'hui ?
     - Peux-tu me dire mon emploi du temps pour demain ?
@@ -242,3 +244,9 @@ nlu:
     - Quels sont les salles ?
     - Donne-moi la liste des salles disponibles.
     - Pouvez-vous me dire les salles ?
+
+- intent: cours_request_schedule
+  examples: |
+    - Quel est le programme pour Lundi?
+    - Montre-moi l'emploi du temps de demain.
+

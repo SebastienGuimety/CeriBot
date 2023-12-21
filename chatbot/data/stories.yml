@@ -96,8 +96,25 @@ stories:
   - action: action_send_weather
 
 
-- story: Demande des salles
+- story: ask for schedule
   steps:
-    - intent: ask_salle
-    - action: action_search_salle
+  - intent: cours_request_schedule
+  - action: course_schedule_form
+  - active_loop: course_schedule_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_fetch_course_schedule
+
+- story: demander des détails sur les cours
+  steps:
+  - intent: cours_request_schedule
+  - action: course_schedule_form
+  - active_loop: course_schedule_form
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: action_fetch_course_schedule
+  - intent: affirm
+  - action: action_provide_course_details
 

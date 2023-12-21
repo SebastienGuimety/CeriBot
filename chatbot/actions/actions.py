@@ -11,6 +11,7 @@ import requests
 import os
 from typing import List, Dict, Text, Any, Optional
 
+from rasa_sdk.events import SlotSet
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -146,75 +147,44 @@ class ActionSendWeather(Action):
             except Exception as e:
                 dispatcher.utter_message(f"Error: {e}")
 
-        
-    
-
-
-
         return []
     
 
-import requests  # Assurez-vous que vous avez importé le module requests
-
-class ActionSearchSalle(Action):
-    def name(self):
-        return "action_search_salle"
-
-    def run(self, dispatcher, tracker, domain):
-        try:
-            response = requests.get("http://127.0.0.1:5000/salles")
-            
-            # Assurez-vous que la réponse est valide (statut 200)
-            if response.status_code == 200:
-                salles_info = response.json()  # Convertir la réponse en objet Python (dictionnaire ou liste).
-
-                if salles_info:
-                    salle = salles_info[0]['nom']  # Accéder au nom de la première salle.
-                    dispatcher.utter_message(text=f"La salle est {salle}.")
-                else:
-                    dispatcher.utter_message(text="Désolé, je n'ai pas pu trouver d'informations sur la salle.")
-            else:
-                dispatcher.utter_message(text="Désolé, je n'ai pas pu obtenir de réponse de l'API.")
-
-        except Exception as e:
-            dispatcher.utter_message(text=f"Une erreur s'est produite : {str(e)}")
 
 
+class ActionFetchCourseSchedule(Action):
+    def name(self) -> Text:
+        return "action_fetch_course_schedule"
 
-# ACTION POUR RECHERCHER L'HORAIRE EN UTILISANT L'API FLASK
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        jour = tracker.get_slot('jour')
+        groupe = tracker.get_slot('groupe')
 
-class ActionSearchHoraire(Action):
-    def name(self):
-        return "action_search_horaire"
+        if not jour or not groupe:
+            dispatcher.utter_message(text="Veuillez fournir le jour et le groupe pour afficher l'emploi du temps.")
+            return []
 
-    def run(self, dispatcher, tracker, domain):
-        cours = tracker.get_slot('cours')
-
-        response = requests.get(f"http://localhost:5000/cours?nom={cours}")
-
+        response = requests.get(f"http://localhost:5000/cours/jour?jour={jour}&groupe={groupe}")
         if response.status_code == 200:
-            cours_info = response.json()[0]  # Prendre le premier cours de la liste.
-            horaire_debut = cours_info['horaire']['debut']
-            horaire_fin = cours_info['horaire']['fin']
-            dispatcher.utter_message(text=f"L'horaire du cours {cours} est de {horaire_debut} à {horaire_fin}.")
+            schedule = response.json()
+            cours_noms = ', '.join([cours['nom_matiere'] for cours in schedule])
+            dispatcher.utter_message(text=f"Vous avez {len(schedule)} cours ce jour : {cours_noms}. Voulez-vous plus d'informations sur les cours ?")
+            # Enregistrez l'horaire dans un slot pour un usage ultérieur
+            return [SlotSet("schedule", schedule)]
         else:
-            dispatcher.utter_message(text="Désolé, je n'ai pas pu trouver l'horaire du cours.")
+            dispatcher.utter_message(text="Désolée, je n'ai pas pu traiter votre demande.")
+            return []
 
+class ActionProvideCourseDetails(Action):
+    def name(self) -> Text:
+        return "action_provide_course_details"
 
-# ACTION POUR RECHERCHER LE PROFESSEUR EN UTILISANT L'API FLASK
-
-class ActionSearchProfesseur(Action):
-    def name(self):
-        return "action_search_professeur"
-
-    def run(self, dispatcher, tracker, domain):
-        cours = tracker.get_slot('cours')
-
-        response = requests.get(f"http://localhost:5000/cours?nom={cours}")
-
-        if response.status_code == 200:
-            cours_info = response.json()[0]  # Prendre le premier cours de la liste.
-            professeur = cours_info['professeur']
-            dispatcher.utter_message(text=f"Le professeur pour le cours {cours} est {professeur}.")
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        schedule = tracker.get_slot('schedule')
+        if schedule:
+            for cours in schedule:
+                dispatcher.utter_message(text=f"Le cours {cours['nom_matiere']} est de {cours['heure_debut']} à {cours['heure_fin']} dans la {cours['salle']}.")
         else:
-            dispatcher.utter_message(text="Désolé, je n'ai pas pu trouver le professeur du cours.")
+            dispatcher.utter_message(text="Je n'ai pas d'informations sur les cours pour ce jour.")
+
+        return []
