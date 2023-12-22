@@ -46,10 +46,10 @@ class CredsPrompt:
         return mail, full_name
 
     @staticmethod
-    def prompt_password():
+    def prompt_password(password: str):
 
         # place in p your password of university
-        p = "Sebgavoite84340_"
+        p = password
         enc = b64encode(p.encode('utf-8'))
         CredsPrompt.nuke(p)
         return enc.decode()
@@ -63,10 +63,15 @@ class CredsPrompt:
 
 
 class PartageZimbraCom():
-    def __init__(self, url: str = 'https://partage.univ-avignon.fr/service/soap', email: str = None):
+    def __init__(self, url: str = 'https://partage.univ-avignon.fr/service/soap', email: str = None, passwd: str = None):
         self.url = url
+        self.passwd = passwd
         self.refresh_timestamp()
         self.email = email
+        
+        print("mot de passe : ", self.passwd)
+        print("email : ", self.email)
+
 
         self.comm = None
         self.token = None
@@ -93,9 +98,9 @@ class PartageZimbraCom():
             #
             #
             ##############
-            config.set('zimbra', 'mail', self.email, encrypted=True)
+            config.set('zimbra', 'mail', "sebastien.guimety@alumni.univ-avignon.fr", encrypted=True)
             config.set('zimbra', 'fullName', "Sebastien Guimety", encrypted=True)
-            config.set('zimbra', 'password', b64decode(CredsPrompt.prompt_password()).decode("utf-8"), encrypted=True)
+            config.set('zimbra', 'password', b64decode(CredsPrompt.prompt_password("Sebgavoite84340_")).decode("utf-8"), encrypted=True)
 
             config.write(open('config.ini', 'w+'))
         else:

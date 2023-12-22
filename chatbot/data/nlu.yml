@@ -114,25 +114,17 @@ nlu:
     - groupe [classique](group)
     - [classique](group)
 
-- intent: give_fullname
+- intent: give_fullname_sender
   examples: |
     - mon nom est John Doe
     - je m'appelle Jane Doe
     - Alice Johnson
 
-- intent: give_email_sender
+- intent: give_fullname_receiver
   examples: |
-    - mon email est john.doe@example.com
-    - jane.doe@email.com
-    - je suis alice.j@example.com
-
-- intent: give_email_receiver
-  examples: |
-    - je veux envoyer un mail à un professeur
-    - je veux envoyer un mail à un étudiant
-    - je veux envoyer un mail à un prof
-    - envoyer un mail à un prof
-    - sebastien.guimety@gmail.com
+    - son nom est John Doe
+    - il s'appelle Jane Doe
+    - Alice Johnson
 
 - intent: give_subject
   examples: |
