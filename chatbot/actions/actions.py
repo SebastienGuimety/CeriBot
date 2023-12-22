@@ -188,3 +188,39 @@ class ActionProvideCourseDetails(Action):
             dispatcher.utter_message(text="Je n'ai pas d'informations sur les cours pour ce jour.")
 
         return []
+
+from typing import Any, Text, Dict, List
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+import requests
+
+class ActionFetchLastCourseTime(Action):
+    def name(self) -> Text:
+        return "action_fetch_last_course_time"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        jour = tracker.get_slot('jour')
+        groupe = tracker.get_slot('groupe')
+
+        # Vérifier si les slots jour et groupe sont remplis
+        if not jour or not groupe:
+            # Vous pouvez choisir de demander à l'utilisateur de fournir les informations manquantes
+            dispatcher.utter_message(text="Veuillez préciser le jour et le groupe pour obtenir l'heure de fin.")
+            return []
+
+        # Faire une requête à l'API pour obtenir l'heure de fin
+        try:
+            response = requests.get(f"http://localhost:5000/heure-fin/jour?jour={jour}&groupe={groupe}")
+            if response.status_code == 200:
+                data = response.json()
+                dispatcher.utter_message(text=f"Le dernier cours pour le groupe {groupe} le {jour} se termine à {data['heure_fin']}.")
+            else:
+                dispatcher.utter_message(text="Désolée, je n'ai pas pu trouver l'information pour le jour et le groupe spécifiés.")
+        except requests.RequestException as e:
+            dispatcher.utter_message(text="Une erreur s'est produite lors de la connexion à l'API.")
+            print(e)
+
+        return []

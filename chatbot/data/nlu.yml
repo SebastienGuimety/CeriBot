@@ -250,3 +250,11 @@ nlu:
     - Quel est le programme pour Lundi?
     - Montre-moi l'emploi du temps de demain.
 
+- intent: ask_last_course_time
+  examples: |
+    - Quelle est l'heure de fin du dernier cours pour [Lundi](jour)?
+    - À quelle heure se termine le dernier cours le [Mardi](jour)?
+    - je termine à quelle heure le [Mardi](jour)?
+    - je finis à quelle heure ?
+    - Donne-moi l'heure de fin pour le groupe [1](groupe) le [Mercredi](jour)
+

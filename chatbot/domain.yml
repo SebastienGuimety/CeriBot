@@ -1,9 +1,10 @@
 version: "3.1"
 
 intents:
+  - ask_last_course_time
   - cours_request_schedule
   - greet
-  - goodbye
+  - goodbyea
   - affirm
   - deny
   - mood_great
@@ -47,11 +48,12 @@ slots:
         entity: groupe
         conditions:
           - active_loop: course_schedule_form
+
   schedule:
     type: list
     influence_conversation: false
     mappings:
-      - type: custom
+    - type: custom
 
 
   section:
@@ -123,6 +125,11 @@ slots:
       - active_loop: weather_form
 
 forms:
+  last_course_time_form:
+    required_slots:
+      - jour
+      - groupe
+
   schedule_form:
     required_slots:
       - section
@@ -148,6 +155,7 @@ forms:
 
 
 responses:
+
   utter_ask_jour:
     - text: "Pour quel jour souhaitez-vous connaître l'emploi du temps ?"
   utter_ask_groupe:
@@ -235,6 +243,7 @@ responses:
 
 
 actions:
+  - action_fetch_last_course_time
   - action_provide_course_details
   - action_fetch_course_schedule
   - utter_submit_schedule
@@ -259,6 +268,8 @@ actions:
   - utter_ask_affichage
   - utter_ask_groupe
   - utter_ask_jour
+  - action_ask_for_group
+
   
   
   

@@ -118,3 +118,16 @@ stories:
   - intent: affirm
   - action: action_provide_course_details
 
+
+- story: last course time query
+  steps:
+    - intent: ask_last_course_time
+    - action: course_schedule_form
+    - active_loop: course_schedule_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_fetch_last_course_time
+
+
+
