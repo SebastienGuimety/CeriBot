@@ -12,7 +12,7 @@ def php_md5(text: str) -> str:
 url = "https://api-dosi-test.univ-avignon.fr/partage/v1/Token/getToken"
 payload = {
     'user': 'uapv1901981',
-    'passClient': php_md5('Sebgavoite84340_')
+    'passClient': php_md5('mdp')
 }
 
 r = requests.post(url, data=payload)

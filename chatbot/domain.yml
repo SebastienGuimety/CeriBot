@@ -12,8 +12,8 @@ intents:
   - ask_schedule
   - give_section
   - give_group
-  - give_fullname
-  - give_email
+  - give_fullname_receiver
+  - give_fullname_sender
   - give_subject
   - give_message
   - ask_sendmail
@@ -44,24 +44,23 @@ slots:
       entity: group
       conditions:
       - active_loop: schedule_form
-
-
-  fullname:
+  
+  fullname_sender:
     type: text
     influence_conversation: true
     mappings:
     - type: from_text
       conditions:
       - active_loop: sendmail_form
-        requested_slot: fullname
-  email:
+        requested_slot: fullname_sender
+  fullname_receiver:
     type: text
     influence_conversation: true
     mappings:
     - type: from_text
       conditions:
       - active_loop: sendmail_form
-        requested_slot: email
+        requested_slot: fullname_receiver
   subject:
     type: text
     influence_conversation: true
@@ -104,8 +103,8 @@ forms:
   
   sendmail_form:
     required_slots:
-      - fullname
-      - email
+      - fullname_sender
+      - fullname_receiver
       - subject
       - message
 
@@ -113,7 +112,6 @@ forms:
     required_slots:
       - city
       - affichage
-
 
 responses:
   utter_greet:
@@ -160,13 +158,15 @@ responses:
     - text: "Merci pour ces informations ! Je vais te dire ton emploi du temps."
     - text: "Merci ! Je vais te dire ton emploi du temps."
   
-  utter_ask_fullname:
+  utter_ask_fullname_sender:
     - text: "Quel est ton nom complet ?"
     - text: "J'ai besoin de ton nom complet pour cela."
     - text: "Dis-moi ton nom complet, s'il te plaît."
   
-  utter_ask_email:
-    - text: "Quel est ton email ?"
+  utter_ask_fullname_receiver:
+    - text: "Quel est le nom complet du destinataire ?"
+    - text: "J'ai besoin du nom complet du destinataire pour cela."
+    - text: "Dis-moi le nom complet du destinataire, s'il te plaît."
   
   utter_ask_subject:
     - text: "Quel est le sujet de ton message ?"
@@ -185,6 +185,9 @@ responses:
   utter_ask_another_city:
     - text: "Quelle ville ?"
     - text: "Donne-moi une autre ville, s'il te plaît."
+  
+  utter_ask_credentials:
+    - text: "Rempli le formulaire"
 
   utter_ask_affichage:
     - text: "Que veux tu savoir ?"
@@ -196,8 +199,6 @@ responses:
       - title: "Les deux"
         payload: '/inform{{"affichage":"tout"}}'
       
-
-
 actions:
   - utter_submit_schedule
   - utter_ask_section
@@ -205,21 +206,22 @@ actions:
   - utter_greet
   - utter_cheer_up
   - utter_did_that_help
+  - utter_ask_credentials
   - utter_happy
   - utter_goodbye
   - utter_iamabot
-  - utter_ask_fullname
-  - utter_ask_email
+  - utter_ask_fullname_sender
+  - utter_ask_fullname_receiver
   - utter_ask_subject
   - utter_ask_message
   - action_say_schedule
   - action_send_email
   - action_send_weather
   - action_submit_weather
+  - action_display_webview
   - utter_ask_city
   - utter_ask_another_city
   - utter_ask_affichage
-  
   
 session_config:
   session_expiration_time: 60

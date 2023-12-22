@@ -36,6 +36,7 @@ rules:
 - rule: Activate form sendmail
   steps:
   - intent: ask_sendmail
+  - action: utter_ask_credentials
   - action: sendmail_form
   - active_loop: sendmail_form
 
@@ -66,5 +67,4 @@ rules:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - action: action_submit_weather
   - action: action_send_weather

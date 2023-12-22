@@ -10,6 +10,9 @@
 import requests
 import os
 from typing import List, Dict, Text, Any, Optional
+import asyncio
+import aiohttp
+
 
 from actions.apiPartage.demo_actions import PartageZimbraCom
 
@@ -63,37 +66,134 @@ class ActionSendEmail(Action):
     def name(self):
         return "action_send_email"
     
-    
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # Obtenir les informations nécessaires de la conversation
-        partage = PartageZimbraCom()
 
-        email_address = tracker.get_slot("email")
-        full_name = tracker.get_slot("fullname")
+        # Assuming the email domain is fixed
+        email_domain = "@alumni.univ-avignon.fr"
+
+        fullname_sender = tracker.get_slot("fullname_sender")
+        fullname_receiver = tracker.get_slot("fullname_receiver")
+
+        # Split the full name into first name and last name
+        parts = fullname_sender.split()
+        if len(parts) >= 2:
+            first_name = parts[0]
+            last_name = parts[-1]
+        else:
+            # Handle cases where there's only one part (e.g., only the first name or last name)
+            first_name = parts[0]
+            last_name = ""  # You can set this to an empty string or handle it differently
+
+        # Convert the first name and last name to lowercase and concatenate with a dot
+        email_username_sender = f"{first_name.lower()}.{last_name.lower()}"
+
+        # Combine the email username with the email domain to get the email address
+        email_address_sender = email_username_sender + email_domain
+
+        # Transform receiver's full name into an email address
+        parts_receiver = fullname_receiver.split()
+        if len(parts_receiver) >= 2:
+            first_name_receiver = parts_receiver[0]
+            last_name_receiver = parts_receiver[-1]
+        else:
+            first_name_receiver = parts_receiver[0]
+            last_name_receiver = ""
+
+        email_username_receiver = f"{first_name_receiver.lower()}.{last_name_receiver.lower()}"
+        email_address_receiver = email_username_receiver + email_domain
+
         subject = tracker.get_slot("subject")
         message = tracker.get_slot("message")
-        print("email_address: ", email_address)
-        print("full_name: ", full_name)
+
+        print("email_address_receiver: ", email_address_receiver)
+        print("email_address_sender: ", email_address_sender)
+        print("full_name: ", fullname_sender)
         print("subject: ", subject)
         print("message: ", message)
-    
-        partage.auth()
-        #partage.request(partage.inbox_request)
-        req = partage.build_msg_request(to={'mail': email_address, 'full_name': full_name}, subject=subject, body=message, html_body=message)
-        response = partage.request(req)
 
-        if not response.is_fault():
-            dispatcher.utter_message("L'email a été envoyé avec succès.")
-        else:   
+        file_path = "actions/login_results.txt"
+        current_directory = os.getcwd()
+        print(f"Current Working Directory: {current_directory}")
+
+
+        # Initialize variables to store extracted username and password
+        nom = None
+        prenom = None
+
+        # Check if the file exists
+        if os.path.exists(file_path):
+            print('file exists')
+            # Read the content of the file
+            with open(file_path, "r") as file:
+                login_results = file.readlines()
+
+            # Extract login and password information
+            for line in login_results:
+                if line.startswith("Nom: "):
+                    nom = line.strip().split(": ")[1]
+                    print(f"Nom: {nom}")
+                elif line.startswith("Prenom: "):
+                    prenom = line.strip().split(": ")[1]
+                    print(f"Nom: {prenom}")
+
+
+        try:
+            partage = PartageZimbraCom(email=email_address_sender, passwd=prenom)
+            partage.auth()
+            #partage.request(partage.inbox_request)
+            req = partage.build_msg_request(to={'mail': email_address_receiver, 'full_name': fullname_sender}, subject=subject, body=message, html_body=message)
+            response = partage.request(req)
+
+            if not response.is_fault():
+                dispatcher.utter_message("L'email a été envoyé avec succès.")
+            else:   
+                dispatcher.utter_message("Échec de l'envoi de l'email.")
+
+                print(f"error\n"
+                    f"fault_message: {response.get_fault_message()}\n"
+                    f"fault_code: {response.get_fault_code()}")
+                
+        except Exception as e:
+            print(f"Error: {e}")
             dispatcher.utter_message("Échec de l'envoi de l'email.")
-
-            print(f"error\n"
-                  f"fault_message: {response.get_fault_message()}\n"
-                  f"fault_code: {response.get_fault_code()}")
-
-
         return []
     
+
+class ActionDisplayWebView(Action):
+    def name(self) -> Text:
+        return "action_display_webview"
+
+    async def run(self,dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any],) -> List[Dict[Text, Any]]:
+        # Implement logic to provide a summary or final message
+        # Construire l'URL de l'API en fonction des informations du tracker
+        file_path = "login_results.txt"
+
+        # Initialize variables to store extracted username and password
+        username = None
+        password = None
+
+        # Check if the file exists
+        if os.path.exists(file_path):
+            # Read the content of the file
+            with open(file_path, "r") as file:
+                login_results = file.readlines()
+
+            # Extract login and password information
+            for line in login_results:
+                if line.startswith("Username: "):
+                    username = line.strip().split(": ")[1]
+                    print(f"Username: {username}")
+
+                elif line.startswith("Password: "):
+                    password = line.strip().split(": ")[1]
+                    print(f"Password: {password}")
+
+
+            # Check if the username and password are extracted        
+        
+
+        return []
 
 class ActionSendWeather(Action):
     def name(self):
@@ -139,17 +239,9 @@ class ActionSendWeather(Action):
                     elif affichage == "vent":
                         dispatcher.utter_message(f"La vitesse du vent actuelle à {city} est de {wind_speed} km/h")
                     else:
-                        dispatcher.utter_message(f"La température actuelle à {city} est de {temperature}°C")
-                        dispatcher.utter_message(f"La météo actuelle à {city} est {weather_description}")
-                        dispatcher.utter_message(f"La vitesse du vent actuelle à {city} est de {wind_speed} km/h")
+                        dispatcher.utter_message(f"La température actuelle à {city} est de {temperature}°C, la météo est {weather_description} et la vitesse du vent est de {wind_speed} km/h")
                 else:
                     dispatcher.utter_message(f"Error: {data['error']['info']}")
             except Exception as e:
                 dispatcher.utter_message(f"Error: {e}")
-
-        
-    
-
-
-
         return []

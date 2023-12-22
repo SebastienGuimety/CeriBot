@@ -53,16 +53,13 @@ stories:
 - story: Story when user asks for send a mail
   steps:
   - intent: ask_sendmail
+  - action: utter_ask_credentials
   - action: sendmail_form
   - active_loop: sendmail_form
   - slot_was_set:
-    - requested_slot: fullname
+    - requested_slot: fullname_sender
   - slot_was_set:
-    - fullname: John Doe
-  - slot_was_set:
-    - requested_slot: email
-  - slot_was_set:
-    - email: seb.gui@gmail.com
+    - fullname_sender: John Doe
   - slot_was_set:
     - requested_slot: subject
   - slot_was_set:
@@ -92,5 +89,4 @@ stories:
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
-  - action: action_submit_weather
   - action: action_send_weather
