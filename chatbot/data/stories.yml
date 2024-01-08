@@ -57,10 +57,6 @@ stories:
   - action: sendmail_form
   - active_loop: sendmail_form
   - slot_was_set:
-    - requested_slot: fullname_sender
-  - slot_was_set:
-    - fullname_sender: John Doe
-  - slot_was_set:
     - requested_slot: subject
   - slot_was_set:
     - subject: Rasa
@@ -90,3 +86,37 @@ stories:
     - requested_slot: null
   - active_loop: null
   - action: action_send_weather
+
+
+- story: ask for schedule
+  steps:
+  - intent: cours_request_schedule
+  - action: course_schedule_form
+  - active_loop: course_schedule_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_fetch_course_schedule
+
+- story: demander des détails sur les cours
+  steps:
+  - intent: cours_request_schedule
+  - action: course_schedule_form
+  - active_loop: course_schedule_form
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: action_fetch_course_schedule
+  - intent: affirm
+  - action: action_provide_course_details
+
+
+- story: last course time query
+  steps:
+    - intent: ask_last_course_time
+    - action: course_schedule_form
+    - active_loop: course_schedule_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_fetch_last_course_time

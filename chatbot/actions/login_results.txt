@@ -1,3 +1,4 @@
-Username: Sebastien Guimety
-Password: mdp
+email_sender: Sebastien.Guimety
+email_receiver: Sebastien.Guimety
+password: Sebgavoite84340_
 --------------------

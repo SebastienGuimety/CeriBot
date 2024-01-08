@@ -114,18 +114,6 @@ nlu:
     - groupe [classique](group)
     - [classique](group)
 
-- intent: give_fullname_sender
-  examples: |
-    - mon nom est John Doe
-    - je m'appelle Jane Doe
-    - Alice Johnson
-
-- intent: give_fullname_receiver
-  examples: |
-    - son nom est John Doe
-    - il s'appelle Jane Doe
-    - Alice Johnson
-
 - intent: give_subject
   examples: |
     - le sujet de mon message est Rasa
@@ -203,3 +191,66 @@ nlu:
     - répète section
     - répète répète répète section
     - section
+
+- intent: ask_schedule
+  examples : |
+    - peux-tu me donner mon emploi du temps ?
+    - donne-moi l'emploi du temps de ma section.
+    - qu'est-ce qui vient ensuite ?
+    - qu'ai-je maintenant ?
+    - quel est l'horaire ?
+    - horaire
+    - Peux-tu me dire mon emploi du temps pour [Lundi](jour) ?
+    - Quel est l'emploi du temps pour [mardi](jour) pour le groupe [1](groupe)?
+
+- intent: ask_salle
+  examples: |
+    - Quelle est la salle pour le cours d'Anglais  aujourd'hui ?
+    - Où se déroule le cours d'anglais ?
+    - Dans quelle salle est le cours d'Anglais ?
+
+- intent: ask_horaire
+  examples: |
+    - Quels sont les horaires du cours d'Anglais demain ?
+    - À quelle heure commence le cours d'Anglais ?
+    - Donne-moi l'horaire du cours d'Anglais.
+
+- intent: ask_professeur
+  examples: |
+    - Qui enseigne le cours d'Anglais  ?
+    - Quel est le professeur pour le cours d'Anglais ?
+    - Nom du professeur pour le cours d'Anglais ?
+
+- intent: request_schedule
+  examples: |
+    - Quels cours ai-je aujourd'hui ?
+    - Peux-tu me dire mon emploi du temps pour demain ?
+    - Quels sont les cours prévus pour la semaine ?
+
+- intent: ask_disponibilite_salle
+  examples: |
+    - Est-ce que la salle est disponible ?
+    - Je peux savoir si la salle est libre ?
+    - Peux-tu vérifier si la salle est occupée ?
+    - Disponibilité de la salle pour demain à 10h ?
+    - La salle 101 est-elle libre cet après-midi ?
+    - Puis-je réserver la salle 101 pour demain ?
+
+- intent: ask_salle
+  examples: |
+    - Quels sont les salles ?
+    - Donne-moi la liste des salles disponibles.
+    - Pouvez-vous me dire les salles ?
+
+- intent: cours_request_schedule
+  examples: |
+    - Quel est le programme pour Lundi?
+    - Montre-moi l'emploi du temps de demain.
+
+- intent: ask_last_course_time
+  examples: |
+    - Quelle est l'heure de fin du dernier cours pour [Lundi](jour)?
+    - À quelle heure se termine le dernier cours le [Mardi](jour)?
+    - je termine à quelle heure le [Mardi](jour)?
+    - je finis à quelle heure ?
+    - Donne-moi l'heure de fin pour le groupe [1](groupe) le [Mercredi](jour)

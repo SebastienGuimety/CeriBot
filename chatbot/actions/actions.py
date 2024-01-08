@@ -16,6 +16,7 @@ import aiohttp
 
 from actions.apiPartage.demo_actions import PartageZimbraCom
 
+from rasa_sdk.events import SlotSet
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 import sys
@@ -72,43 +73,12 @@ class ActionSendEmail(Action):
         # Assuming the email domain is fixed
         email_domain = "@alumni.univ-avignon.fr"
 
-        fullname_sender = tracker.get_slot("fullname_sender")
-        fullname_receiver = tracker.get_slot("fullname_receiver")
-
-        # Split the full name into first name and last name
-        parts = fullname_sender.split()
-        if len(parts) >= 2:
-            first_name = parts[0]
-            last_name = parts[-1]
-        else:
-            # Handle cases where there's only one part (e.g., only the first name or last name)
-            first_name = parts[0]
-            last_name = ""  # You can set this to an empty string or handle it differently
-
-        # Convert the first name and last name to lowercase and concatenate with a dot
-        email_username_sender = f"{first_name.lower()}.{last_name.lower()}"
-
-        # Combine the email username with the email domain to get the email address
-        email_address_sender = email_username_sender + email_domain
-
-        # Transform receiver's full name into an email address
-        parts_receiver = fullname_receiver.split()
-        if len(parts_receiver) >= 2:
-            first_name_receiver = parts_receiver[0]
-            last_name_receiver = parts_receiver[-1]
-        else:
-            first_name_receiver = parts_receiver[0]
-            last_name_receiver = ""
-
-        email_username_receiver = f"{first_name_receiver.lower()}.{last_name_receiver.lower()}"
-        email_address_receiver = email_username_receiver + email_domain
+        
 
         subject = tracker.get_slot("subject")
         message = tracker.get_slot("message")
 
-        print("email_address_receiver: ", email_address_receiver)
-        print("email_address_sender: ", email_address_sender)
-        print("full_name: ", fullname_sender)
+        
         print("subject: ", subject)
         print("message: ", message)
 
@@ -118,8 +88,11 @@ class ActionSendEmail(Action):
 
 
         # Initialize variables to store extracted username and password
-        nom = None
-        prenom = None
+        email_sender = None
+        email_receiver = None
+        password = None
+        email_address_receiver = None
+        email_address_sender = None
 
         # Check if the file exists
         if os.path.exists(file_path):
@@ -130,19 +103,28 @@ class ActionSendEmail(Action):
 
             # Extract login and password information
             for line in login_results:
-                if line.startswith("Nom: "):
-                    nom = line.strip().split(": ")[1]
-                    print(f"Nom: {nom}")
-                elif line.startswith("Prenom: "):
-                    prenom = line.strip().split(": ")[1]
-                    print(f"Nom: {prenom}")
+                if line.startswith("email_sender: "):
+                    email_sender = line.strip().split(": ")[1]
+                    email_address_sender = email_sender + email_domain
+                    print(f"email_sender: {email_address_sender}")
+                elif line.startswith("email_receiver: "):
+                    email_receiver = line.strip().split(": ")[1]
+                    email_address_receiver = email_receiver + email_domain
+                    print(f"email_receiver: {email_address_receiver}")
+                elif line.startswith("password: "):
+                    password = line.strip().split(": ")[1]
+                    print(f"password: {password}")
 
+        
+
+        print("email_address_receiver: ", email_address_receiver)
+        print("email_address_sender: ", email_address_sender)
 
         try:
-            partage = PartageZimbraCom(email=email_address_sender, passwd=prenom)
+            partage = PartageZimbraCom(email=email_address_sender, passwd=password)
             partage.auth()
             #partage.request(partage.inbox_request)
-            req = partage.build_msg_request(to={'mail': email_address_receiver, 'full_name': fullname_sender}, subject=subject, body=message, html_body=message)
+            req = partage.build_msg_request(to={'mail': email_address_receiver, 'full_name': "Sebastien Guimety"}, subject=subject, body=message, html_body=message)
             response = partage.request(req)
 
             if not response.is_fault():
@@ -244,4 +226,74 @@ class ActionSendWeather(Action):
                     dispatcher.utter_message(f"Error: {data['error']['info']}")
             except Exception as e:
                 dispatcher.utter_message(f"Error: {e}")
+        return []
+    
+class ActionFetchCourseSchedule(Action):
+    def name(self) -> Text:
+        return "action_fetch_course_schedule"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        jour = tracker.get_slot('jour')
+        groupe = tracker.get_slot('groupe')
+
+        if not jour or not groupe:
+            dispatcher.utter_message(text="Veuillez fournir le jour et le groupe pour afficher l'emploi du temps.")
+            return []
+
+        response = requests.get(f"http://localhost:5000/cours/jour?jour={jour}&groupe={groupe}")
+        if response.status_code == 200:
+            schedule = response.json()
+            cours_noms = ', '.join([cours['nom_matiere'] for cours in schedule])
+            dispatcher.utter_message(text=f"Vous avez {len(schedule)} cours ce jour : {cours_noms}. Voulez-vous plus d'informations sur les cours ?")
+            # Enregistrez l'horaire dans un slot pour un usage ultérieur
+            return [SlotSet("schedule", schedule)]
+        else:
+            dispatcher.utter_message(text="Désolée, je n'ai pas pu traiter votre demande.")
+            return []
+
+class ActionProvideCourseDetails(Action):
+    def name(self) -> Text:
+        return "action_provide_course_details"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        schedule = tracker.get_slot('schedule')
+        if schedule:
+            for cours in schedule:
+                dispatcher.utter_message(text=f"Le cours {cours['nom_matiere']} est de {cours['heure_debut']} à {cours['heure_fin']} dans la {cours['salle']}.")
+        else:
+            dispatcher.utter_message(text="Je n'ai pas d'informations sur les cours pour ce jour.")
+
+        return []
+
+
+
+class ActionFetchLastCourseTime(Action):
+    def name(self) -> Text:
+        return "action_fetch_last_course_time"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        jour = tracker.get_slot('jour')
+        groupe = tracker.get_slot('groupe')
+
+        # Vérifier si les slots jour et groupe sont remplis
+        if not jour or not groupe:
+            # Vous pouvez choisir de demander à l'utilisateur de fournir les informations manquantes
+            dispatcher.utter_message(text="Veuillez préciser le jour et le groupe pour obtenir l'heure de fin.")
+            return []
+
+        # Faire une requête à l'API pour obtenir l'heure de fin
+        try:
+            response = requests.get(f"http://localhost:5000/heure-fin/jour?jour={jour}&groupe={groupe}")
+            if response.status_code == 200:
+                data = response.json()
+                dispatcher.utter_message(text=f"Le dernier cours pour le groupe {groupe} le {jour} se termine à {data['heure_fin']}.")
+            else:
+                dispatcher.utter_message(text="Désolée, je n'ai pas pu trouver l'information pour le jour et le groupe spécifiés.")
+        except requests.RequestException as e:
+            dispatcher.utter_message(text="Une erreur s'est produite lors de la connexion à l'API.")
+            print(e)
+
         return []
