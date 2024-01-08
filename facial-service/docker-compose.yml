@@ -1,0 +1,22 @@
+version: '3'
+services:
+  python-app:
+    container_name: retrieve-images
+    build:
+      context: get-image
+    volumes:
+      - ./get-image:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    ports:
+      - "9559:9559"
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY}
+  face-recognition:
+    build:
+      context: face-recognition
+    volumes:
+#      - ./face-recognition:/app
+      - ./get-image/img:/app/img
+    container_name: face-recognition
+#    command: python3 -m uvicorn main:app --reload
