@@ -1,6 +1,8 @@
 version: "3.1"
 
 intents:
+  - ask_last_course_time
+  - cours_request_schedule
   - greet
   - goodbye
   - affirm
@@ -12,8 +14,6 @@ intents:
   - ask_schedule
   - give_section
   - give_group
-  - give_fullname_receiver
-  - give_fullname_sender
   - give_subject
   - give_message
   - ask_sendmail
@@ -26,8 +26,33 @@ entities:
   - group
   - city
   - affichage
+  - jour
+  - groupe
 
 slots:
+  jour:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: jour
+        conditions:
+          - active_loop: course_schedule_form
+  groupe:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: groupe
+        conditions:
+          - active_loop: course_schedule_form
+
+  schedule:
+    type: list
+    influence_conversation: false
+    mappings:
+    - type: custom
+
   section:
     type: text
     influence_conversation: true
@@ -45,22 +70,7 @@ slots:
       conditions:
       - active_loop: schedule_form
   
-  fullname_sender:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_text
-      conditions:
-      - active_loop: sendmail_form
-        requested_slot: fullname_sender
-  fullname_receiver:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_text
-      conditions:
-      - active_loop: sendmail_form
-        requested_slot: fullname_receiver
+  
   subject:
     type: text
     influence_conversation: true
@@ -96,15 +106,25 @@ slots:
       - active_loop: weather_form
 
 forms:
+  last_course_time_form:
+    required_slots:
+      - jour
+      - groupe
+
   schedule_form:
     required_slots:
       - section
       - group
+       
+
+  course_schedule_form:
+    required_slots:
+        - jour
+        - groupe
+
   
   sendmail_form:
     required_slots:
-      - fullname_sender
-      - fullname_receiver
       - subject
       - message
 
@@ -114,6 +134,12 @@ forms:
       - affichage
 
 responses:
+  utter_ask_jour:
+    - text: "Pour quel jour souhaitez-vous connaître l'emploi du temps ?"
+
+  utter_ask_groupe:
+    - text: "Quel est votre groupe ?"
+
   utter_greet:
   - text: "Salut ! Comment ça va ?"
   - text: "Bonjour ! Comment vas-tu ?"
@@ -157,17 +183,7 @@ responses:
     - text: "Merci pour ces informations !"
     - text: "Merci pour ces informations ! Je vais te dire ton emploi du temps."
     - text: "Merci ! Je vais te dire ton emploi du temps."
-  
-  utter_ask_fullname_sender:
-    - text: "Quel est ton nom complet ?"
-    - text: "J'ai besoin de ton nom complet pour cela."
-    - text: "Dis-moi ton nom complet, s'il te plaît."
-  
-  utter_ask_fullname_receiver:
-    - text: "Quel est le nom complet du destinataire ?"
-    - text: "J'ai besoin du nom complet du destinataire pour cela."
-    - text: "Dis-moi le nom complet du destinataire, s'il te plaît."
-  
+
   utter_ask_subject:
     - text: "Quel est le sujet de ton message ?"
   
@@ -200,6 +216,9 @@ responses:
         payload: '/inform{{"affichage":"tout"}}'
       
 actions:
+  - action_fetch_last_course_time
+  - action_provide_course_details
+  - action_fetch_course_schedule
   - utter_submit_schedule
   - utter_ask_section
   - utter_ask_group
@@ -210,8 +229,6 @@ actions:
   - utter_happy
   - utter_goodbye
   - utter_iamabot
-  - utter_ask_fullname_sender
-  - utter_ask_fullname_receiver
   - utter_ask_subject
   - utter_ask_message
   - action_say_schedule
